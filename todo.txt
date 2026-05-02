@@ -1,0 +1,8 @@
+SPLASH SCREEN : BOSS BETS with loading bar {3 sec}
+1) Demo Dashboard page  : a) Top navigation (login/signup) > Deposit , logout
+                          b) Bottom navigation (main page, live server bets, wallet, profile menu)
+2) Signup/Login with number/email - Basic signup with stk push and email (verification process of both)
+
+3) Topmost : bonus and referal offer 
+
+UI/ STYILING LAST PIECE

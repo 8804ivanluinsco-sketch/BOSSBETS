@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOSS BETS | Aviator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- 1. SPLASH SCREEN -->
+    <div id="splash-screen">
+        <h1 class="splash-logo">BOSS BETS</h1>
+        <div class="loader-container">
+            <div id="loading-bar"></div>
+        </div>
+    </div>
+    <!-- menu/MENU VIEW -->
+    <div id="menu-view" class="hidden">
+        <!-- User menu Header -->
+        <div class="profile-header">
+            <div class="avatar">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=worldboss88" alt="avatar">
+            </div>
+            <div class="user-info">
+                <h3>BossBets</h3>
+                <p>2547*********</p>
+            </div>
+            <div class="chevron-right">›</div>
+        </div>
+
+        <!-- Menu Sections -->
+        <div class="menu-section">
+            <label>ACCOUNT</label>
+            <div class="menu-item">
+                <div class="menu-icon">👤</div>
+                <div class="menu-text">
+                    <h4>My Profile</h4>
+                    <p>View and edit your profile</p>
+                </div>
+                <div class="chevron">›</div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-icon">🔔</div>
+                <div class="menu-text">
+                    <h4>Notifications</h4>
+                    <p>Manage your alerts</p>
+                </div>
+                <div class="chevron">›</div>
+            </div>
+        </div>
+
+        <div class="menu-section">
+            <label>REWARDS</label>
+            <div class="menu-item">
+                <div class="menu-icon icon-orange">🔗</div>
+                <div class="menu-text">
+                    <h4>Refer Friends</h4>
+                    <p>Earn bonus on referrals</p>
+                </div>
+                <span class="badge badge-orange">Earn 10%</span>
+                <div class="chevron">›</div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-icon icon-green">🎁</div>
+                <div class="menu-text">
+                    <h4>Promotions</h4>
+                    <p>View active offers</p>
+                </div>
+                <span class="badge badge-new">NEW</span>
+                <div class="chevron">›</div>
+            </div>
+        </div>
+
+        <div class="menu-section">
+            <label>SUPPORT</label>
+            <div class="menu-item">
+                <div class="menu-icon">❔</div>
+                <div class="menu-text">
+                    <h4>Help Center</h4>
+                    <p>FAQs and guides</p>
+                </div>
+                <div class="chevron">›</div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-icon">💬</div>
+                <div class="menu-text">
+                    <h4>Contact Us</h4>
+                    <p>Get in touch</p>
+                </div>
+                <div class="chevron">›</div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-icon">📜</div>
+                <div class="menu-text">
+                    <h4>Terms & Conditions</h4>
+                    <p>Legal information</p>
+                </div>
+                <div class="chevron">›</div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-icon">🛡️</div>
+                <div class="menu-text">
+                    <h4>Responsible Gaming</h4>
+                    <p>Play responsibly</p>
+                </div>
+                <div class="chevron">›</div>
+            </div>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-item logout-item" onclick="logout()" style="cursor: pointer;">
+                <div class="menu-icon icon-red">📤</div>
+                <div class="menu-text">
+                    <h4 class="text-red">Logout</h4>
+                    <p>Sign out of your account</p>
+                </div>
+                <div class="chevron">›</div>
+            </div>
+        </div>
+
+        <div class="version-text">MoneyPesa v1.0.0</div>
+    </div>
+    <!-- 2. MAIN APP CONTENT -->
+    <div id="main-app" class="hidden">
+
+        <!-- Top Promo Banner -->
+        <div id="top-promo">
+            <span>🔥 200% Welcome Bonus! Refer a friend and get 50€ FREE! 🔥</span>
+        </div>
+
+        <!-- Top Navigation -->
+        <header id="top-nav">
+            <div class="logo">BossBets</div>
+
+            <!-- Group 1: Visible when Logged Out -->
+            <div id="auth-buttons" class="nav-actions">
+                <button class="btn-login-small" onclick="openModal('login')">Login</button>
+                <button class="btn-register-small" onclick="openModal('signup')">Register</button>
+            </div>
+
+            <!-- Group 2: Visible when Logged In -->
+            <div id="user-actions" class="nav-actions hidden">
+                <div class="header-balance">0 <small>KES</small></div>
+                <button class="btn-deposit-small" onclick="switchTab('wallet')">+ Deposit</button>
+                <div class="profile-toggle" onclick="switchTab('menu')">👤</div>
+            </div>
+        </header>
+
+        <!-- Dashboard / Game Area -->
+        <main id="dashboard">
+            <!-- Multiplier History Bar -->
+            <!-- Place this at the top of your game container -->
+            <!-- THE HISTORY BAR -->
+            <div id="history-bar"
+                style="display: flex; gap: 10px; padding: 10px; background: #000; min-height: 40px; overflow-x: auto; border-bottom: 1px solid #333;">
+            </div>
+
+            <!-- Jackpot Banner -->
+            <div class="jackpot-banner">
+                <div class="jackpot-content">
+                    <small>🏆 DAILY JACKPOT</small>
+                    <h2>1500x</h2>
+                </div>
+            </div>
+
+            <!-- Main Game Canvas Area -->
+            <div class="game-container">
+                <canvas id="gameCanvas"></canvas>
+                <div id="multiplier-display">1.00x</div>
+            </div>
+
+            <!-- Betting Controls -->
+            <div class="bet-panel">
+                <div class="bet-type-row">
+                    <button class="btn-toggle active">🔄 AUTO</button>
+                    <button class="btn-toggle">🎯 CASH</button>
+                    <div class="bet-input-wrapper">
+                        <input type="number" value="2.00" step="0.1">
+                        <span>x</span>
+                    </div>
+                </div>
+
+                <div class="bet-main-row">
+                    <div class="stepper">
+                        <button onclick="adjustBet(-1)">−</button>
+                        <input type="number" id="bet-amount" value="0">
+                        <button onclick="adjustBet(1)">+</button>
+                    </div>
+                    <button id="main-action-btn" class="btn-bet" onclick="placeBet()">BET</button>
+                </div>
+
+                <div class="quick-bets">
+                    <button onclick="setBet(100)">100</button>
+                    <button onclick="setBet(200)">200</button>
+                    <button onclick="setBet(500)">500</button>
+                    <button onclick="setBet(1000)">1000</button>
+                </div>
+            </div>
+        </main>
+        <div id="deposit-view" class="hidden">
+            <div class="auth-card">
+                <button class="btn-back" onclick="switchTab('game')">← Back</button>
+                <h2 id="banner-text">DEPOSIT FUNDS</h2>
+                <div id="deposit-form-container">
+                    <label class="input-label">M-Pesa Number</label>
+                    <div class="input-wrapper">
+                        <i>📱</i>
+                        <input type="text" id="deposit-phone" class="auth-input" placeholder="2547XXXXXXXX">
+                    </div>
+
+                    <label class="input-label">Amount (Min: 100 KES)</label>
+                    <div class="input-wrapper">
+                        <i>💰</i>
+                        <input type="number" id="deposit-amount" class="auth-input" placeholder="Enter Amount">
+                    </div>
+
+                    <div class="quick-bets">
+                        <button onclick="setDepositAmount(100)">100</button>
+                        <button onclick="setDepositAmount(200)">200</button>
+                        <button onclick="setDepositAmount(500)">500</button>
+                        <button onclick="setDepositAmount(1000)">1000</button>
+                    </div>
+
+                    <button class="btn-auth" id="stk-push-btn" onclick="triggerStkPush()">Send STK Push →</button>
+                </div>
+            </div>
+        </div>
+        <!-- WALLET VIEW -->
+        <div id="wallet-view" class="hidden">
+            <!-- Balance Card -->
+            <div class="wallet-balance-card">
+                <label>TOTAL BALANCE</label>
+                <div class="balance-amount">KES 0.00</div>
+                <div class="withdrawal-status">
+                    <span class="trend-up">↗</span> Available for withdrawal
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="wallet-actions">
+                <button class="btn-deposit-large" onclick="showDepositForm()">
+                    <span class="icon">+</span> Deposit
+                </button>
+                <button class="btn-withdraw-large">
+                    <span class="icon">−</span> Withdraw
+                </button>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="wallet-section">
+                <div class="section-header">
+                    <i>🕒</i> QUICK STATS
+                </div>
+                <div class="stat-row">
+                    <div class="stat-info">
+                        <span class="stat-icon-bg">↓</span>
+                        Total Deposited
+                    </div>
+                    <div class="stat-value">KES 0.00</div>
+                </div>
+            </div>
+
+            <!-- Transaction History -->
+            <div class="wallet-section">
+                <div class="section-header">
+                    TRANSACTION HISTORY
+                    <span class="refresh-icon">↻</span>
+                </div>
+                <div class="empty-state">
+                    No transactions found
+                </div>
+            </div>
+
+            <!-- Tip Box -->
+            <div class="tip-box">
+                💡 <strong>Tip:</strong> Deposits are instant via M-Pesa. Withdrawals are processed within 5 minutes.
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <footer id="bottom-nav">
+            <div class="nav-item active" onclick="switchTab('game')"><i>🏠</i>
+                <p>Home</p>
+            </div>
+            <div class="nav-item"><i>📊</i>
+                <p>Live</p>
+            </div>
+            <div class="nav-item" onclick="switchTab('wallet')"><i>👛</i>
+                <p>Wallet</p>
+            </div>
+            <div class="nav-item" onclick="switchTab('menu')"><i>
+                    <div class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </i>
+                <p>Menu</p>
+            </div>
+        </footer>
+    </div>
+
+
+    <div id="auth-modal" class="modal hidden">
+        <div class="modal-content auth-card">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+
+            <!-- dynamic Title -->
+            <h2 id="modal-title" class="auth-header">Login to BossBets</h2>
+
+            <!-- Banner Image Placeholder -->
+            <div class="auth-banner">
+                <div class="banner-text" id="banner-text">WELCOME BACK</div>
+            </div>
+
+            <div id="auth-form-container">
+                <!-- Form fields will be injected here via JS to switch between Login/Signup -->
+            </div>
+
+            <div class="auth-footer">
+                <p id="toggle-text">Don't have an account? <span class="text-red" onclick="toggleAuthMode()">Sign
+                        Up</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

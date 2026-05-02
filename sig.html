@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- sig.html -->
+<div class="prediction-box">
+    <!-- The script looks for 'round-id' -->
+    <h2>Round #<span id="round-id">----</span></h2>
+    
+    <!-- The script looks for 'live-display' -->
+    <h1 id="live-display" style="font-size: 80px;">1.00</h1>
+    
+    <!-- The script looks for 'target-val' -->
+    <div class="target">Max Target: <b id="target-val">0.00</b></div>
+</div>
+
+ <script>
+    setInterval(() => {
+        const raw = localStorage.getItem('live_stats');
+        if (raw) {
+            const data = JSON.parse(raw);
+            
+            // Get references to elements
+            const roundEl = document.getElementById('round-id');
+            const liveEl = document.getElementById('live-display');
+            const targetEl = document.getElementById('target-val');
+
+            // Only update if the element actually exists on the page
+            if (roundEl) roundEl.innerText = data.roundId;
+            if (liveEl) liveEl.innerText = data.current;
+            if (targetEl) targetEl.innerText = data.target;
+            
+            console.log("Receiving live data:", data.current);
+        }
+    }, 50); 
+</script>
+</body>
+
+</html>
