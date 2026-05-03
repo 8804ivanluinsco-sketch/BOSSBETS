@@ -149,6 +149,15 @@ window.addEventListener('DOMContentLoaded', () => {
 // Fix squishing on window resize or orientation change
 window.addEventListener('resize', initGame);
 
+const socket = io();
+
+// Listen for the server to start a round
+socket.on('roundStarted', (data) => {
+    console.log("Server started round. Suggested Exit:", data.prediction);
+    // Use data.prediction to update a "Predictor" UI element if you have one
+    startNewRound(); 
+});
+
 function initGame() {
     if (!canvas) return;
 
@@ -181,13 +190,6 @@ function gameLoop() {
     if (multiplierDisplay) {
         multiplierDisplay.innerText = counter.toFixed(2) + "x";
     }
-
-    // Sync with Admin Page
-    localStorage.setItem('live_stats', JSON.stringify({
-        current: counter.toFixed(2),
-        target: crashPoint,
-        roundId: upcomingOdds[currentRoundIndex % upcomingOdds.length].id
-    }));
 
     drawGameCanvas();
 
@@ -539,62 +541,37 @@ function cashOut() {
     console.log(`Cashed out at ${counter.toFixed(2)}x. Won: ${winnings.toFixed(2)}`);
 }
 // --- 1. THE UPDATED START FUNCTION ---
-function startNewRound() {
+function startNewRound()
+// 1. Move this to the VERY TOP of script.js
+const socket = io(); 
+
+// 2. Listen for the server to start the round for EVERYONE
+socket.on('roundStarted', (data) => {
+    console.log("Server signal received!");
+    
+    // Set the crash point from the server data so everyone has the same odds
+    crashPoint = data.crashPoint; 
+    
+    // Reset local game state
     isFlying = true;
     counter = 1.00;
     progress = 0;
-
-    // Generate a random crash point
-    crashPoint = (Math.random() * 8.9 + 1.1).toFixed(2);
-    let currentId = Math.floor(Math.random() * 9000) + 1000;
-
-    // Broadcast to storage
-    localStorage.setItem('live_stats', JSON.stringify({
-        current: "1.00",
-        target: crashPoint,
-        roundId: currentId
-    }));
-    console.log(`New Random Target: ${crashPoint}`);
-    if (multiplierDisplay) {
-        multiplierDisplay.style.color = "white";
-        multiplierDisplay.innerText = "1.00x";
-    }
-
-    // IMPORTANT: Make sure history shows even before first crash
-    updateHistoryUI();
-
+    
+    // Reset UI color
+    multiplierDisplay.style.color = "white";
+    
+    // Start the animation
     requestAnimationFrame(gameLoop);
-}
+});
 
-// --- 2. THE UPDATED FINISH FUNCTION (ENSURE ONLY ONE OF THESE EXISTS) ---
+// 3. Update the finishRound function
 function finishRound() {
-    console.log("CRASHED AT:", crashPoint);
     isFlying = false;
-
-    // 1. Save the crash point to the history array
-    gameHistory.push(Number(crashPoint));
-
-    // 2. Update the visual bar at the top
-    updateHistoryUI();
-
-    // 3. UI Feedback
-    if (multiplierDisplay) {
-        multiplierDisplay.style.color = "#e61e23";
-        multiplierDisplay.innerText = "FLEW AWAY!";
-    }
-
-    currentRoundIndex++;
-
-    // 4. Reset for next round
-    setTimeout(() => {
-        counter = 1.00;
-        progress = 0;
-        if (multiplierDisplay) {
-            multiplierDisplay.style.color = "white";
-            multiplierDisplay.innerText = "1.00x";
-        }
-        startNewRound();
-    }, 3000);
+    multiplierDisplay.style.color = "#e61e23";
+    multiplierDisplay.innerText = "FLEW AWAY!";
+    
+    // DON'T call startNewRound() here anymore. 
+    // The server will send a 'roundStarted' event when the next one begins.
 }
 
 // --- 3. THE UI UPDATE FUNCTION ---
