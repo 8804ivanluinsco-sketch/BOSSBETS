@@ -2,7 +2,7 @@
 // --- GLOBAL VARIABLES (TOP OF FILE) ---
 // Initial fake data
 // Initialization
-const splash = document.getElementById('splash-screen');
+const splashcreen = document.getElementById('splash-screen');
 const loadingBar = document.getElementById('loading-bar');
 const mainApp = document.getElementById('main-app');
 const canvas = document.getElementById('gameCanvas');
@@ -133,16 +133,24 @@ let balance = 1000.00;
 
 // 1. Splash & Resize Logic
 window.addEventListener('DOMContentLoaded', () => {
-    if (loadingBar) loadingBar.style.width = '100%';
+    // 1. Start the loading bar animation immediately
+    setTimeout(() => {
+        loadingBar.style.width = '100%';
+    }, 100);
 
-    setTimeout(() => {
-        if (splash) splash.classList.add('hidden');
-        if (mainApp) mainApp.classList.remove('hidden');
-        // Small delay to ensure CSS layout is finalized before measuring canvas
-        setTimeout(initGame, 100);
-    }, 3000);
+    // 2. Hide the splash screen after 3 seconds
+    setTimeout(() => {
+        splashScreen.classList.add('hidden'); 
+        
+        // Safety check: ensure the game view is visible
+        document.getElementById('game-view').classList.remove('hidden');
+        
+        // Start the game loop
+        if (typeof startNewRound === "function") {
+            startNewRound();
+        }
+    }, 3000); 
 });
-
 // Fix squishing on window resize or orientation change
 window.addEventListener('resize', initGame);
 
