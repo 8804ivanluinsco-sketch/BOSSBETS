@@ -143,7 +143,7 @@ window.addEventListener('DOMContentLoaded', () => {
         splashScreen.classList.add('hidden'); 
         
         // Safety check: ensure the game view is visible
-        document.getElementById('game-view').classList.remove('hidden');
+        mainApp.classList.remove('hidden');
         
         // Start the game loop
         if (typeof startNewRound === "function") {
