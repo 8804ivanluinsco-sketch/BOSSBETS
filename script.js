@@ -2,7 +2,7 @@
 // --- GLOBAL VARIABLES (TOP OF FILE) ---
 // Initial fake data
 // Initialization
-const splashcreen = document.getElementById('splash-screen');
+const splashScreen = document.getElementById('splash-screen');
 const loadingBar = document.getElementById('loading-bar');
 const mainApp = document.getElementById('main-app');
 const canvas = document.getElementById('gameCanvas');
