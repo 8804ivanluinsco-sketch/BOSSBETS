@@ -15,7 +15,8 @@ html {
     background: var(--dark-grey);
     color: var(--white);
     font-family: 'Arial', sans-serif;
-    overflow: hidden;
+    height: 100%;
+    width: 100%;
 }
 
 /* Splash Screen */
@@ -787,6 +788,11 @@ input {
     padding: 10px;
     overflow-x: auto;
     background: #000;
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+.history-bar::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome/Safari */
 }
 
 .m-badge {
@@ -840,11 +846,10 @@ input {
     white-space: nowrap;
 }
 
-/* Color coding based on value */
-.pill-low { color: #3498db; }    /* Blue for low odds */
-.pill-med { color: #9b59b6; }    /* Purple for medium */
-.pill-high { color: #f1c40f; }   /* Gold for high */
-
+/* Logic-based Color Coding */
+.pill-low { color: #3498db; border-color: rgba(52, 152, 219, 0.5); }   /* Blue */
+.pill-med { color: #9b59b6; border-color: rgba(155, 89, 182, 0.5); }  /* Purple */
+.pill-high { color: #f1c40f; border-color: rgba(241, 196, 15, 0.5); }  /* Gold */
 
 /* Bet Panel */
 .bet-panel {
@@ -909,13 +914,31 @@ input {
 
 .btn-bet {
     flex: 1.5;
-    background: #28a745;
+    background: #28a745; /* Default Green */
     color: white;
     border: none;
     border-radius: 8px;
     font-weight: 900;
     font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
     box-shadow: 0 4px 0 #1a6d2d;
+    text-transform: uppercase;
+}
+
+.btn-bet:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #1a6d2d;
+}
+
+/* Color classes for JS to toggle */
+.btn-orange { 
+    background: #e67e22 !important; 
+    box-shadow: 0 4px 0 #a05718 !important; 
+}
+.btn-red { 
+    background: #e61e23 !important; 
+    box-shadow: 0 4px 0 #8b0000 !important; 
 }
 
 .quick-bets {
@@ -937,4 +960,30 @@ input {
 /* Add this to the very bottom of style.css */
 .hidden {
     display: none !important;
+}
+
+/* Cashed Out Notification */
+.win-toast {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(40, 167, 69, 0.95);
+    color: white;
+    padding: 15px 35px;
+    border-radius: 50px;
+    font-size: 1.5rem;
+    font-weight: 900;
+    z-index: 2000;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border: 2px solid #fff;
+    animation: popInFadeOut 2s ease-in-out forwards;
+}
+
+@keyframes popInFadeOut {
+    0% { opacity: 0; transform: translate(-50%, -30%) scale(0.8); }
+    15% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+    25% { transform: translate(-50%, -50%) scale(1); }
+    80% { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, -70%); }
 }
