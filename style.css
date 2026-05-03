@@ -51,7 +51,7 @@ html {
     width: 0%;
     height: 100%;
     background: var(--bright-red);
-    transition: width 3s linear;
+    transition: width 2.5s ease-in-out; /* Set a specific time */
 }
 
 /* Top Promo */
